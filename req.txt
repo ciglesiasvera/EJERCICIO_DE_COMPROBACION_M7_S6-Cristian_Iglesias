@@ -1,0 +1,74 @@
+CUE: MIGRACIONES
+
+REBOUND EXERCISE: ANALIZANDO LAS MIGRACIONES
+
+Para resolver este ejercicio, anteriormente debe haber revisado la lectura y los videos del CUE:
+Relaciones Muchos a Muchos y Uno a Uno.
+
+EJERCICIO:
+
+1. Partiendo del modelo creado en el CUE anterior, relacionado al modelo de fábricas y productos, 
+liste todas las migraciones realizadas e indique por qué se crea el archivo 0001_inicial.py.
+
+R: Para listar todas las migraciones se utiliza el siguiente comando:
+"python manage.py showmigrations"
+El archivo 0001_inicial.py se crea como la primera migración de una aplicación
+Django. Este archivo contiene las definiciones iniciales de los modelos y las 
+operaciones necesarias para crear las tablas correspondientes en la base de 
+datos. Se genera automáticamente cuando ejecutas el comando makemigrations 
+por primera vez después de definir tus modelos.
+Para generar la migración inicial, se debe ejecutar:
+"python manage.py makemigrations"
+Este comando detecta los cambios en los modelos y crea un archivo, 0001_inicial.py, 
+de migración en el directorio migrations de la aplicación correspondiente, 
+en este caso, productos.
+
+2. ¿Cuál es el comando que permite observar el SQL antes de aplicar una 
+determinada migración, por ejemplo la 0001_inicial.py?
+
+R: El comando es el siguiente:
+"python manage.py sqlmigrate productos 0001_initial"
+
+3. ¿Cuáles son las claves primarias de los modelos?
+
+R: Esto lo podemos apreciar en el archivo 0001_initial.py
+
+import django.db.models.deletion
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Fabricante',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nombre', models.CharField(max_length=100)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Producto',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nombre', models.CharField(max_length=100)),
+                ('descripcion', models.TextField()),
+                ('precio', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('fabricante', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='productos.fabricante')),
+            ],
+        ),
+    ]
+
+
+De acuerdo a lo anterior, las llaves primarias son las siguientes:
+
+Para el modelo Fabricante:
+Fabricante ---> id
+
+Para el modelo Producto:
+Producto   ---> id
